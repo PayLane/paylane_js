@@ -41,7 +41,7 @@
 		common: {
 			customDataAttribute: 'data-paylane',
 
-			apiUrl: 'https://direct.mtyszkiewicz.paylane.l/rest.js/cards/generateToken',
+			apiUrl: 'https://direct.paylane.com/rest.js/cards/generateToken',
 
 			defaultConfig: {
 				cardNumberInputName: 'cc-number',
