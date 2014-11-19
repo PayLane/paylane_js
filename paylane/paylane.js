@@ -268,22 +268,10 @@
 					options.success.call(request, data);
 				}
 
-				request.onreadystatechange = function()
+				request.onerror = function()
 				{
-					if (request.DONE === request.readyState)
-					{
-						switch (request.status)
-						{
-							case 200:
-								var data = JSON.parse(request.responseText);
-								options.success.call(request, data);
-								break;
-
-							default:
-								options.error.call(request);
-						}
-					}
-				};
+					options.error.call(request);
+				}
 
 				request.send(data);
 			},
