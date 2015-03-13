@@ -267,6 +267,13 @@
 					request = new XMLHttpRequest,
 					data = null;
 
+				var IE8or9 = window.XDomainRequest && !('withCredentials' in new XMLHttpRequest());
+
+				if (IE8or9)
+				{
+					request = new XDomainRequest;
+				}
+
 				request.open(options.type.toUpperCase(), options.url);
 
 				// include the request params
@@ -274,25 +281,23 @@
 				{
 					// stringify the input data object
 					data = JSON.stringify(options.data);
-					request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+					if (!IE8or9)
+					{
+						request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+					}
 				}
 
-				request.onreadystatechange = function()
+				request.onload = function()
 				{
-					if (request.DONE === request.readyState)
-					{
-						switch (request.status)
-						{
-							case 200:
-								var data = JSON.parse(request.responseText);
-								options.success.call(request, data);
-								break;
+					var data = JSON.parse(request.responseText);
+					options.success.call(request, data);
+				}
 
-							default:
-								options.error.call(request);
-						}
-					}
-				};
+				request.onerror = function()
+				{
+					options.error.call(request);
+				}
 
 				request.send(data);
 			},
@@ -308,11 +313,6 @@
 			 */
 			addEventListener: function(targetElement, type, callback)
 			{
-				if (!this.isObject(targetElement) || !targetElement instanceof HTMLElement)
-				{
-					this.error('Event target element must be an HTMLElement instance');
-				}
-
 				if (targetElement.addEventListener)
 				{
 					targetElement.addEventListener(type, callback);
@@ -467,10 +467,6 @@
 					shared.helpers.error('Malformed payment form selector passed');
 			}
 
-			if (!shared.helpers.isObject(data.form) || !data.form instanceof HTMLFormElement)
-			{
-				shared.helpers.error('Unable to find the payment for in the DOM');
-			}
 
 			return data;
 		},
