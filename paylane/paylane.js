@@ -160,6 +160,32 @@
 			},
 
 			/**
+			 * Returns the element value for any form node that can have a value,
+			 * so a textarea, input and select.
+			 * 
+			 * @param  	{mixed}		el 	HTML element
+			 * @returns {string}		Element value
+			 */
+			getElementValue: function(el)
+			{
+				var value = null;
+
+				switch (el.nodeName.toLowerCase())
+				{
+					case 'input':
+					case 'textarea':
+						value = el.value;
+						break;
+
+					case 'select':
+						value = el.options[el.selectedIndex].value;
+						break;
+				}
+
+				return value;
+			},
+
+			/**
 			 * Stringifies a plain object to an HTTP request string,
 			 * formatted as key1=val1&key2=val2. All key and value
 			 * pairs are URI encoded.
@@ -539,18 +565,18 @@
 		{
 			var postData = {
 					public_api_key: 	this.apiKey, 
-					card_number: 		this.inputFields[this.config.cardNumberInputName].value,
-					expiration_month: 	this.inputFields[this.config.cardExpiryMonthInputName].value,
-					expiration_year: 	this.inputFields[this.config.cardExpiryYearInputName].value,
-					name_on_card: 		this.inputFields[this.config.cardHolderInputName].value
+					card_number: 		shared.helpers.getElementValue(this.inputFields[this.config.cardNumberInputName]),
+					expiration_month: 	shared.helpers.getElementValue(this.inputFields[this.config.cardExpiryMonthInputName]),
+					expiration_year: 	shared.helpers.getElementValue(this.inputFields[this.config.cardExpiryYearInputName]),
+					name_on_card: 		shared.helpers.getElementValue(this.inputFields[this.config.cardHolderInputName]),
 				},
 				self = this;
 
 			if (this.inputFields[this.config.cardSecurityCodeInputName])
 			{
-				postData.card_code = this.inputFields[this.config.cardSecurityCodeInputName].value;
+				postData.card_code = shared.helpers.getElementValue(this.inputFields[this.config.cardSecurityCodeInputName]);
 			}
-
+			
 			shared.helpers.ajax({
 				url: shared.common.apiUrl,
 				type: 'POST',

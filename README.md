@@ -22,22 +22,50 @@ MIT license. See the LICENSE file for more details.
 
 Heres the basic HTML markup for a typical payment form: 
 
+```
     <form id="checkout-form" action="" type="">
         <!-- merchant's input elements, as many as required -->
-        <input type="text" name="first-name" value="">
-        <input type="text" name="last-name" value="">
-        <input type="text" name="email" value="">
-        <input type="text" name="address" value="">
+        <input type="text" name="first-name">
+        <input type="text" name="last-name">
+        <input type="text" name="email">
+        <input type="text" name="address">
     
         <!-- card related input elements: -->
-        <input type="text" value="" data-paylane="cc-number">
-        <input type="text" value="" data-paylane="cc-expiry-month">
-        <input type="text" value="" data-paylane="cc-expiry-year">
-        <input type="text" value="" data-paylane="cc-cvv">
-        <input type="text" value="" data-paylane="cc-name-on-card">
+        <input type="text" data-paylane="cc-number">
+        <input type="text" data-paylane="cc-cvv">
+        <input type="text" data-paylane="cc-name-on-card">
+
+        <!-- please note that the expiry month/year elements can be simple inputs -->
+            <input type="text" data-paylane="cc-expiry-month">
+            <input type="text" data-paylane="cc-expiry-year">
+        <!-- or they can be select nodes -->
+            <select data-paylane="cc-expiry-month">
+                <option value="01">January</option>
+                <option value="02">February</option>
+                <option value="03">March</option>
+                <option value="04">April</option>
+                <option value="05">May</option>
+                <option value="06">June</option>
+                <option value="07">July</option>
+                <option value="08">August</option>
+                <option value="09">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+            </select>
+
+            <select data-paylane="cc-expiry-year">
+                <option value="2015">2015</option>
+                <option value="2016">2016</option>
+                <option value="2017">2017</option>
+                <option value="2018">2018</option>
+                <option value="2019">2019</option>
+                <option value="2019">2020</option>
+            </select>
     
         <input type="submit" value="submit">
     </form>
+```
 
 While the actual markup of the form can be fully altered to the merchants needs, the following points are crucial: 
 
@@ -47,6 +75,7 @@ While the actual markup of the form can be fully altered to the merchants needs,
 
 Next, initialize the PayLane.js client: 
 
+```
     <script src="path/to/paylane.js"></script>
     <script>
         try
@@ -61,6 +90,7 @@ Next, initialize the PayLane.js client:
             console.log(e); // exceptions are fatal
         }
     </script>
+````
 
 The only required values by the PayLane.js client are the merchants public API key and a payment form selector. 
 
@@ -87,6 +117,7 @@ Optionally, the following values can also be passed to the PayLane.js client (if
 11. `errorHandler` (default: empty function) – an error handler callback function, must take the following three arguments: type, code, description
 12. `callbackHandler` (default: empty function) – an optional form submission callback handler. This callback will be called once the AJAX request containing the temporary token is completed. The token will appear in the form as a hidden input, and will also be passed to the callback function as the only argument. If no callback is specified, the form will simply be resubmitted using the standard form submit event.  
 
+```
         /**
          * Custom token callback handler.
          * 
@@ -94,6 +125,7 @@ Optionally, the following values can also be passed to the PayLane.js client (if
          * @return {void}
          */
         callbackHandler: function(token){}
+```
 
 
 ## Error handling:
@@ -106,6 +138,7 @@ Errors, on the other hand, are slightly more unexpected as they can be caused by
 
 ### 1. Error callback handler:
 
+```
     /**
      * Custom error handler which allows the merchant to
      * handle errors raised by the PayLaneClient class,
@@ -117,6 +150,7 @@ Errors, on the other hand, are slightly more unexpected as they can be caused by
      * @return {void}
      */
     errorHandler: function(type, code, description){}
+````
 
 ### 2. Hidden input fields:
 
