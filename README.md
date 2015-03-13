@@ -18,10 +18,9 @@ MIT license. See the LICENSE file for more details.
 4. The usual form submission process is resumed, and the merchants servers receive the token along with the other information from the form (except for the sensitive card data).
 5. The merchant can issue a sale/authorization/checkCard/checkCard3DSecure request using the secret token (bear in mind that the token is only valid for 15 minutes).
 
-## initialization
+## Initialization
 
-Heres the basic HTML markup for a typical payment form: 
-
+Heres the basic HTML markup for a typical payment form:
 
     <form id="checkout-form" action="" type="">
         <!-- merchant's input elements, as many as required -->
@@ -66,7 +65,6 @@ Heres the basic HTML markup for a typical payment form:
         <input type="submit" value="submit">
     </form>
 
-
 While the actual markup of the form can be fully altered to the merchants needs, the following points are crucial: 
 
 1. The card related input elements must have the appropriate data-paylane attributes.
@@ -75,14 +73,17 @@ While the actual markup of the form can be fully altered to the merchants needs,
 
 Next, initialize the PayLane.js client: 
 
-
     <script src="path/to/paylane.js"></script>
     <script>
         try
         {
             var client = new PayLaneClient({
                 publicApiKey: 'PUBLIC_API_KEY',
-                paymentForm: 'checkout-form'
+                paymentForm: 'checkout-form',
+                callbackHandler: function(token)
+                {
+                    console.log(token);
+                }
             });
         }
         catch (e)
@@ -90,7 +91,6 @@ Next, initialize the PayLane.js client:
             console.log(e); // exceptions are fatal
         }
     </script>
-`
 
 The only required values by the PayLane.js client are the merchants public API key and a payment form selector. 
 
@@ -123,8 +123,7 @@ Optionally, the following values can also be passed to the PayLane.js client (if
      * @param  {string} token Temporary credit card token
      * @return {void}
      */
-    callbackHandler: function(token){}
-
+     callbackHandler: function(token){}
 
 ## Error handling:
 
