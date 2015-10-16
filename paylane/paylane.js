@@ -22,7 +22,7 @@
 	{
 		this.message = message;
 		this.stack = Error().stack;
-	};
+	}
 	PayLaneError.prototype = Object.create(Error.prototype);
 	PayLaneError.prototype.name = 'PayLaneError';
 		
@@ -264,7 +264,7 @@
 						success: function(){}
 					},
 					options = this.objectMerge(defaults, requestOptions),
-					request = new XMLHttpRequest,
+					request = new XMLHttpRequest(),
 					data = null;
 
 				request.open(options.type.toUpperCase(), options.url);
@@ -308,7 +308,7 @@
 			 */
 			addEventListener: function(targetElement, type, callback)
 			{
-				if (!this.isObject(targetElement) || !targetElement instanceof HTMLElement)
+				if (!(this.isObject(targetElement) && targetElement instanceof HTMLElement))
 				{
 					this.error('Event target element must be an HTMLElement instance');
 				}
@@ -467,7 +467,7 @@
 					shared.helpers.error('Malformed payment form selector passed');
 			}
 
-			if (!shared.helpers.isObject(data.form) || !data.form instanceof HTMLFormElement)
+			if (!(shared.helpers.isObject(data.form) && data.form instanceof HTMLFormElement))
 			{
 				shared.helpers.error('Unable to find the payment for in the DOM');
 			}
